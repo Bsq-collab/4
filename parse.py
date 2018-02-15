@@ -1,14 +1,27 @@
+
 '''
 Bayan Berri, Donia Tung
-Team DataBases
+Team DataBases 2.0
 SoftDev2 pd7
-K04--Mi only nyam ital food, mon!
-2018-02-15
+K05--Import/Export Bank
+2018-02-16
 '''
 from pymongo import MongoClient
+import urllib2, json
 '''setting up interactions with the database'''
-c=MongoClient("lisa.stuy.edu",27017);
-collie=c.test.restaurants
+client =MongoClient("lisa.stuy.edu",27017)
+db = client ["teamDB"]
+collection = db["pokedex"]
+
+def read():
+    data = urllib2.urlopen("https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json")
+    string = data.read()
+    dictionary = json.loads(string)#returns json object string into a dict
+    for each in dictionary["pokemon"]:
+        #print each
+        db.collection.insert(each)
+
+read();
 
 def find_boroughs(borough):
    '''
@@ -50,7 +63,7 @@ def by_zip_score(zc,threshold):
 def cleverness(borough, cuisine):
     '''
     based on the borough and cuisine inputted, returns a list of restaurants meeting the specs,
-    shows their grade as well as their address, if you'd like to visit them! 
+    shows their grade as well as their address, if you'd like to visit them!
     '''
     dictionary=collie.find({"$and":[{"borough":borough},{"cuisine": cuisine}]})
     for each in dictionary:
