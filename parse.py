@@ -20,29 +20,32 @@ def find_boroughs(borough):
    return dictionary
 
 def by_zip(code):
-    dictionary_zip=collie.find({"zipcode":code})
+    dictionary_zip=collie.find({"address.zipcode":code})
     for each in dictionary_zip:
         print each["name"]
     return dictionary_zip
 
 def by_zip_grade(zc,grade):
-    dictionary=collie.find({"$and":[{"zipcode":zc},{"grade":grade}]})
+    dictionary=collie.find({"$and":[{"address.zipcode":zc},{"grades.grade":grade}]})
     for each in dictionary:
         print each["name"]
     return dictionary
 
 def by_zip_score(zc,threshold):
-    dictionary=collie.find({"$and":[{"zipcode":zc},{"score":{"$lt":threshold}}]})
+    dictionary=collie.find({"$and":[{"address.zipcode":zc},{"grades.score":{"$lt":threshold}}]})
     for each in dictionary:
         print each["name"]
     return dictionary
-
+'''
 for each in collie.find():
     print each
-
+'''
 print "=====================BOROUGH==================\n"
 #find_boroughs("Manhattan")
 print "=====================ZIP==================\n"
 by_zip('11218')
 print "=====================ZG==================\n"
-#by_zip_grade(11220,"A")
+by_zip_grade("11218","A")
+print "===================ZS===================\n"
+
+by_zip_score("11218",4)
