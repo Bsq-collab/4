@@ -6,7 +6,7 @@ K04--Mi only nyam ital food, mon!
 2018-02-15
 '''
 from pymongo import MongoClient
-
+'''setting up interactions with the database'''
 c=MongoClient("lisa.stuy.edu",27017);
 collie=c.test.restaurants
 
@@ -47,11 +47,25 @@ def by_zip_score(zc,threshold):
        print each["name"]
    return dictionary
 
-'''
-def Something more clever:
+def cleverness(borough, cuisine):
+    '''
+    based on the borough and cuisine inputted, returns a list of restaurants meeting the specs,
+    shows their grade as well as their address, if you'd like to visit them! 
+    '''
+    dictionary=collie.find({"$and":[{"borough":borough},{"cuisine": cuisine}]})
+    for each in dictionary:
+        addressdict = each["address"]
+        gradesdict = each["grades"]
+        print each["name"] + " Grade: " + gradesdict[0]["grade"]
+        print addressdict["building"]+ " " + addressdict["street"] + " " + addressdict["zipcode"]
+    return dictionary
+
+
+
+
+cleverness("Manhattan", "Chinese")
 
 '''
-
 print "=====================BOROUGH==================\n"
 find_boroughs("Manhattan")
 print "=====================ZIP==================\n"
@@ -60,3 +74,4 @@ print "=====================ZG==================\n"
 by_zip_grade("11218","A")
 print "===================ZS===================\n"
 by_zip_score("11218",4)
+'''
