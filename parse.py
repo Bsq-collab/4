@@ -1,4 +1,10 @@
-
+'''
+Bayan Berri, Donia Tung
+Team DataBases
+SoftDev2 pd7
+K04--Mi only nyam ital food, mon!
+2018-02-15
+'''
 from pymongo import MongoClient
 
 c=MongoClient("lisa.stuy.edu",27017);
