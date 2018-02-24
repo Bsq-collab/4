@@ -6,85 +6,56 @@ SoftDev2 pd7
 K05--Import/Export Bank
 2018-02-16
 '''
+
+'''
+Our dataset is the PokemonGO-Pokedex json. It can be found here:
+https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json
+It contains a dictionary with one key-- "Pokemon". each set within the value is a list of attributes such as the pokedex number, pokemon name, type, and an image link of each pokemon. for example the first list of the value in the pokedex is bulbasaur the second is ivysaur and so on.
+
+In order to import this data we used the function insert_many because the dictionary's "root" is just one key. and there are subdictionaries within that value.
+
+'''
+
+
 from pymongo import MongoClient
-import urllib2, json
+import json
+
 '''setting up interactions with the database'''
 client =MongoClient("lisa.stuy.edu",27017)
-db = client ["teamDB"]
+db = client ["teamDB"]#creates new database on lisa
 collection = db["pokedex"]
 
-def read():
-    data = urllib2.urlopen("https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json")
-    string = data.read()
-    dictionary = json.loads(string)#returns json object string into a dict
-    for each in dictionary["pokemon"]:
-        #print each
-        db.collection.insert(each)
+def read_json():
+    js=open("pokedex.json","r")
+    pokedex=json.loads(js.read())
+    js.close()
 
-read();
-
-def find_boroughs(borough):
-   '''
-   prints and returns all restaurants in a specified borough.
-   '''
-   dictionary = collie.find({"borough":borough})
-   for each in dictionary:
-      print each["name"]
-   return dictionary
-
-def by_zip(code):
-   '''
-   prints and returns all restaurants in a specified zip code.
-   '''
-   dictionary_zip=collie.find({"address.zipcode":code})
-   for each in dictionary_zip:
-      print each["name"]
-   return dictionary_zip
-
-def by_zip_grade(zc,grade):
-   '''
-   prints and returns all restaurants in a specified zipcode and with a specified grade.
-   '''
-   dictionary=collie.find({"$and":[{"address.zipcode":zc},{"grades.grade":grade}]})
-   for each in dictionary:
-      print each["name"]
-   return dictionary
-
-def by_zip_score(zc,threshold):
-   '''
-   prints and returns all restaurants in a specified zip code
-   with a score below a specified threshold
-   '''
-   dictionary=collie.find({"$and":[{"address.zipcode":zc},{"grades.score":{"$lt":threshold}}]})
-   for each in dictionary:
-       print each["name"]
-   return dictionary
-
-def cleverness(borough, cuisine):
-    '''
-    based on the borough and cuisine inputted, returns a list of restaurants meeting the specs,
-    shows their grade as well as their address, if you'd like to visit them!
-    '''
-    dictionary=collie.find({"$and":[{"borough":borough},{"cuisine": cuisine}]})
-    for each in dictionary:
-        addressdict = each["address"]
-        gradesdict = each["grades"]
-        print each["name"] + " Grade: " + gradesdict[0]["grade"]
-        print addressdict["building"]+ " " + addressdict["street"] + " " + addressdict["zipcode"]
-    return dictionary
+    p=pokedex["pokemon"]
+    collection.insert_many(p)
 
 
+def find_name(poke_name):
+    ret=collection.find({"name":poke_name})
+    for each in ret:
+        print each
+    return ret
 
+def by_number(poke_number):
+    ret=collection.find({"id":poke_number})
+    for each in ret:
+        print each
+    return ret
 
-cleverness("Manhattan", "Chinese")
+def by_type(poke_type):
+    ret=collection.find({"type":poke_type})
+    for each in ret:
+        print each
+    return ret
 
-'''
-print "=====================BOROUGH==================\n"
-find_boroughs("Manhattan")
-print "=====================ZIP==================\n"
-by_zip('11218')
-print "=====================ZG==================\n"
-by_zip_grade("11218","A")
-print "===================ZS===================\n"
-by_zip_score("11218",4)
-'''
+#read_json()#commented out bc the table already exists
+print "============BY NAME==========="
+find_name("Bulbasaur")
+print "============BY Type==========="
+by_type("Fire")
+print"==========By Number====== "
+by_number(45)
