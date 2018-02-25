@@ -35,19 +35,37 @@ def read_json():
 
 
 def find_name(poke_name):
+    '''
+    prints and returns pokemon by given name
+    '''
     ret=collection.find({"name":poke_name})
     for each in ret:
         print each
     return ret
 
 def by_number(poke_number):
+    '''
+    prints and returns pokemon by given id number
+    '''
     ret=collection.find({"id":poke_number})
     for each in ret:
         print each
     return ret
 
 def by_type(poke_type):
+    '''
+    prints and returns pokemon by given type
+    '''
     ret=collection.find({"type":poke_type})
+    for each in ret:
+        print each
+    return ret
+
+def by_type_id(poke_type,poke_num):
+    '''
+    prints all the pokemon that are less than pokenum and have type of poke_type
+    '''
+    ret=collection.find({"$and":[{"id":{"$lt":poke_num}},{"type":poke_type}]})
     for each in ret:
         print each
     return ret
@@ -59,3 +77,5 @@ print "============BY Type==========="
 by_type("Fire")
 print"==========By Number====== "
 by_number(45)
+print"========type/ID=========="
+by_type_id("Fire",45)
