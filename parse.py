@@ -25,6 +25,7 @@ client =MongoClient("lisa.stuy.edu",27017)
 db = client ["teamDB"]#creates new database on lisa
 collection = db["pokedex"]
 
+'''Creating database
 def read_json():
     js=open("pokedex.json","r")
     pokedex=json.loads(js.read())
@@ -32,7 +33,7 @@ def read_json():
 
     p=pokedex["pokemon"]
     collection.insert_many(p)
-
+'''
 
 def find_name(poke_name):
     '''
