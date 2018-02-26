@@ -25,16 +25,18 @@ client =MongoClient("lisa.stuy.edu",27017)
 db = client ["teamDB"]#creates new database on lisa
 collection = db["pokedex"]
 
-'''Creating database
+#Creating database
 def read_json():
-    js=open("pokedex.json","r")
-    pokedex=json.loads(js.read())
-    js.close()
+    if collection.count()==0:
+        print "UPLOADING"
+        js=open("pokedex.json","r")
+        pokedex=json.loads(js.read())
+        js.close()
 
-    p=pokedex["pokemon"]
-    collection.insert_many(p)
-'''
-
+        p=pokedex["pokemon"]
+        collection.insert_many(p)
+    else:
+        print "not gonna do anything bc ur code works :) "
 def find_name(poke_name):
     '''
     prints and returns pokemon by given name
@@ -71,10 +73,10 @@ def by_type_id(poke_type,poke_num):
         print each
     return ret
 
-#read_json()#commented out bc the table already exists
-print "============BY NAME==========="
+read_json()#commented out bc the table already exists
+print "\n\n\n============BY NAME===========\n\n\n"
 find_name("Bulbasaur")
-print "============BY Type==========="
+print "\n\n\n============BY Type===========\n\n\n"
 by_type("Fire")
 print"==========By Number====== "
 by_number(45)
