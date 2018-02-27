@@ -9,9 +9,10 @@ def home():
 
 @my_site.route("/result", methods=["GET", "POST"])
 def results():
-    pokeName = request.form.get("name")
+    pokeName = request.form["title"]
     pokeInfo = parse.find_name(pokeName)
-    return render_template("results.html", name = pokeName, img = pokeInfo["img"], type = pokeInfo["type"], id = pokeInfo["id"], avspawns = pokeInfo["avg_spawns"] )
+    infoDict = pokeInfo
+    return render_template("results.html", name = pokeName, type = infoDict)
 
 if __name__ == "__main__":
     my_site.debug = True

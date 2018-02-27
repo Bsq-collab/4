@@ -76,11 +76,13 @@ def by_type_id(poke_type,poke_num):
     return ret
 
 read_json()#commented out bc the table already exists
-'''print "\n\n\n============BY NAME===========\n\n\n"
+print "\n\n\n============BY NAME===========\n\n\n"
 find_name("Bulbasaur")
+'''
 print "\n\n\n============BY Type===========\n\n\n"
 by_type("Fire")
 print"==========By Number====== "
 by_number(45)
 print"========type/ID=========="
-by_type_id("Fire",45)'''
+by_type_id("Fire",45)
+'''
