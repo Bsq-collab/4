@@ -45,8 +45,8 @@ def find_name(poke_name):
     '''
     ret=collection.find({"name":poke_name})
     for each in ret:
-        print each
-    return ret
+        abc = each
+    return abc
 
 def by_number(poke_number):
     '''
