@@ -11,8 +11,7 @@ def home():
 def results():
     pokeName = request.form["title"]
     pokeInfo = parse.find_name(pokeName)
-    infoDict = pokeInfo
-    return render_template("results.html", name = pokeName, type = infoDict)
+    return render_template("results.html", name = pokeName, type = pokeInfo)
 
 if __name__ == "__main__":
     my_site.debug = True
